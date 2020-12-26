@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  jenkins:
+    image: jokcik/jenkins
+    user: root
+    ports:
+      - 8082:8080
+      - 50000:50000
+    # for docker in docker
+    privileged: true
+    volumes:
+      # enable persistent volume (warning: make sure that the local jenkins_home folder is created)
+      - jenkins_data:/var/jenkins_home:rw
+      # mount docker sock and binary for docker in docker (only works on linux)
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/local/bin/docker
+      # mount ssh keys
+      - ./.ssh:/root/.ssh
+
+volumes:
+  jenkins_data:
